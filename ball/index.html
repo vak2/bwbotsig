@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <title>GOODWIN</title>
+    </head>
+    <body>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                -webkit-tap-highlight-color: rgba(72, 72, 250, 0.1);
+            }
+            @font-face {
+            font-family: 'Intro';
+            src: url('static/intro.otf') format('opentype');
+        }
+
+            body {
+                width: 100vw;
+                height: 100vh;
+                font-family: 'Intro';
+            }
+
+            .main {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                position: relative;
+            }
+
+            .gradient-bg {
+                background: url("static/sky-bg.jpg");
+                background-position: 60%;
+                background-size: cover;
+            }
+
+            .container {
+                /* width: 90%; */
+                display: flex;
+                justify-content: space-evenly;
+                flex-direction: column;    
+            }
+
+
+            .hidden {
+                opacity: 0;
+                height: 0;
+                transform: scale(0);
+                transition: opacity 500ms ease, height 500ms ease, transform 500ms ease;
+            }
+
+
+
+            /* ШАПКА */
+
+            .top-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3vmax;
+            }
+
+            .title {
+                font-size: 6vmax;
+                font-weight: 1000;
+                text-align: center;
+                /* max-height: 9vmax; */
+                font-family: 'Intro';
+                background: linear-gradient(135deg, #ff9100, #ffc64a);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                padding: 5%;
+            }
+
+            .mines-count-select {
+                text-align: center;
+                font-size: 2.5vmax;
+                padding: 2%;
+                width: 50%;
+                border-radius: 10px;
+                outline: 1px solid #062b6e;
+                border: none;
+                color: white;
+                background-color: #0f4785;
+                font-weight: bold;
+            }
+
+
+            /* ВЫБОР СТАВКИ */
+            .bet-inner {
+                /* width: 100%; */
+                text-align: center;
+                position: relative;
+                display: flex;
+                gap: 3vmax;
+                flex-direction: column;
+                margin-bottom: 20px;
+                padding: 4vmax;
+                margin: 5%;
+                z-index: 1;
+                background-color: white;
+                font-size: 3vmax;
+                border-radius: 0.8vmax;
+            }
+
+            #bet-select {
+                padding: 5px;
+                font-size: 16px;
+                text-align: center;
+                font-size: 3vmax;
+            }
+
+            #selected-bet {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            #submit {
+                font-family: 'Intro';
+                background-color: #0194fd;
+                color: white;
+                padding: 2%;
+                font-weight:00;
+                border: none;
+                border-radius: 1vmax;
+                font-size: 3vmax;
+            }
+
+
+            /* СИГНАЛЫ */
+            .signals-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                margin-bottom: 8vh;
+                position: relative;
+            }
+
+            .balloon-img {
+                align-self: start;
+                justify-self: end;
+                pointer-events: none;
+                width: 0%;
+                transition: width 500ms;
+            }
+
+            .balloon-big {
+                width: 80%;
+            }
+
+            .signal {
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-self: center;
+                color: white;
+                font-weight: 800;
+                letter-spacing: 1px;
+                text-shadow: 0 0.3vh 1.6vmax rgba(0,0,0, 0.7);
+                margin-top: -3%;
+            }
+
+            .signal__summ {
+                font-size: 6vmax;
+                font-family: 'Intro';
+                font-weight: 1000;
+            }
+
+            .signal__currency {
+                font-size: 3vmax;
+            }
+
+
+            /* КНОПКИ УПРАВЛЕНИЯ */
+            .controls {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                height: -100px;
+                width: 100%;
+                gap: 3vmax;
+                margin-bottom: 5%;
+            }
+
+            .change-bet-button {
+                font-family: 'Intro';
+                font-size: 2.6vmax;
+                font-weight: 600;
+                color: white;
+                background-color: #0194fd;
+                border-radius: 1vmax;
+                padding: 3% 8%;
+                border: none;
+                transition: all 150ms;
+            }
+
+            .change-bet-button:active {
+                transform: scale(0.8);
+            }
+
+            .restart-button {
+                background: linear-gradient(#eb008d, #98004b);
+                border: none;
+                height: 12vh;
+                aspect-ratio: 1/1;
+                padding: 2%;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .restart-button img {
+                width: 70%;
+                aspect-ratio: 1;
+            }
+
+            .spin-on-click {
+                animation: spin-around ease-out 0.3s;
+                animation-iteration-count: 1;
+            }
+
+            @keyframes spin-around {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+
+            .get-signal {
+                height: 10vh;
+                padding: 0 8vw;
+                font-size: large;
+                font-weight: bold;
+                border-radius: 5vmax;
+                border: none;
+                color: white;
+                background: linear-gradient(-45deg, #377a0d, #5ab10d, #459812);
+            }
+
+            @keyframes turn-small {
+                from {
+                    transform: scale(0.9);
+                }
+                to {
+                    transform: scale(1);
+                }
+            }
+            .small-on-click {
+                animation: turn-small ease-in 0.2s;
+                animation-iteration-count: 1;
+            }
+
+        .tab {
+            position: fixed;
+            bottom: 0;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
+            border-radius: 50px;
+            height: 70px; /* Фиксированная высота для десктопа */
+        }
+
+        .tab button {
+            background-color: inherit;
+            flex: 1 0 auto;
+            margin: 0 10px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 20px;
+            transition: 0.3s;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            font-size: 16px;
+            font-family: 'Intro', Arial, sans-serif;
+        }
+
+        .tab button img {
+            max-width: 38px;
+            height: 38px;
+        }
+
+        .tab button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+
+        .tab button.active {
+            background-color: #666;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Медиазапросы для адаптации на мобильных устройствах */
+        @media (max-width: 768px) {
+            .tab {
+                height: 70px; /* Фиксированная высота для планшетов */
+            }
+
+            .tab button {
+                margin: 0 5px;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .tab button img {
+                max-width: 32px;
+                height: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tab {
+                height: 70px; /* Фиксированная высота для мобильных устройств */
+            }
+
+
+            .tab button {
+                margin: 0 3px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .tab button img {
+                max-width: 28px;
+                height: 28px;
+            }
+        }
+
+        </style>
+        <main class="main gradient-bg">
+            <section class="top-content">
+                <h1 class="title">BALLOON</h1>
+            </section>
+   
+            <div id="bet-container">
+                <div class="bet-inner">
+                    <label for="bet-select">Select your bet:</label>
+                    <select id="bet-select">
+                        <option value="5">$5</option>
+                        <option value="10">$10</option>
+                        <option value="20">$20</option>
+                        <option value="30">$30</option>
+                        <option value="40">$40</option>
+                        <option value="50">$50</option>
+                    </select>
+                    <button id="submit">Submit</button>
+                </div>
+                <!-- <div id="selected-bet">Выбранная ставка: $<span id="bet-value">7</span></div> -->
+            </div>
+        </div>
+        <div class="tab">
+            <button class="tablinks games-icon" data-tab="Games" onclick="window.location.href=&#39;https://martinthecash.github.io/main/&#39;;">
+                <img src="back.png" alt="Игры">
+            </button>
+        </div>
+            <section class="signals-container">
+                <img src="static/balloon.png" id="balloonImg" class="balloon-img"/>
+                <div id="signalDisplay" class="signal hidden">
+                    <p class="signal__summ" id="signal">...</p>
+                    <p class="signal__currency">USD</p>
+                </div>
+            </section>
+
+            <section id="controlsSection" class="controls hidden">
+                <button id="changeBet" class="change-bet-button">
+                    CHANGE BET
+                </button>
+                <button id="restart" class="restart-button">
+                    <img src="static/reboot_arrow.png" class="restart-img"/>
+                </button>
+            </section>
+        </main>
+        <script src="static/js/balloon.js"></script>
+    </body>
+</html>
